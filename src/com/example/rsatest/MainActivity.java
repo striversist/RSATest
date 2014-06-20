@@ -12,6 +12,7 @@ import javax.crypto.Cipher;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends Activity {
 
@@ -21,6 +22,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         test();
+        testSign();
     }
 
     private void test() {
@@ -28,7 +30,7 @@ public class MainActivity extends Activity {
             KeyPairGenerator keyPairGen;
             keyPairGen = KeyPairGenerator.getInstance("RSA");
             // 密钥位数
-            keyPairGen.initialize(1024);
+            keyPairGen.initialize(2048);
             // 密钥对
             KeyPair keyPair = keyPairGen.generateKeyPair();
 
@@ -36,9 +38,9 @@ public class MainActivity extends Activity {
             PublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
             // 私钥
             PrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-            
+
             // 加解密类
-            Cipher cipher = Cipher.getInstance("RSA");  // Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            Cipher cipher = Cipher.getInstance("RSA"); // Cipher.getInstance("RSA/ECB/PKCS1Padding");
 
             // 明文
             byte[] plainText = "我们都很好！邮件：@sina.com".getBytes();
@@ -56,6 +58,27 @@ public class MainActivity extends Activity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testSign() {
+        final String Algorithm = "MD5withRSA";  // MD2withRSA/MD5withRSA/SHA1withRSA
+        String plain = "你好123@gmail";
+
+        try {
+            KeyPairGenerator keyPairGen;
+            keyPairGen = KeyPairGenerator.getInstance("RSA");
+            keyPairGen.initialize(2048);
+            KeyPair keyPair = keyPairGen.generateKeyPair();
+
+            PublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+            PrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+            byte[] signData = RSAHelper.signData(plain.getBytes(), privateKey, Algorithm);
+            
+            boolean verify = RSAHelper.verifySignature(plain.getBytes(), publicKey, Algorithm, signData);
+            Log.d("", "" + verify);
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
