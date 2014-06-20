@@ -11,6 +11,11 @@ import java.security.SignatureException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -19,8 +24,7 @@ public class RSAHelper {
         if (key == null)
             return null;
 
-        byte[] keyBytes;
-        keyBytes = base64Dec(key);
+        byte[] keyBytes = base64Dec(key);
 
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -32,8 +36,7 @@ public class RSAHelper {
         if (key == null)
             return null;
 
-        byte[] keyBytes;
-        keyBytes = base64Dec(key);
+        byte[] keyBytes = base64Dec(key);
 
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -89,6 +92,55 @@ public class RSAHelper {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static byte[] encrypt(byte[] data, Key key) {
+        if (data == null || key == null)
+            return null;
+
+        byte[] result = null;
+
+        try {
+            Cipher cipher = Cipher.getInstance("RSA"); // Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            result = cipher.doFinal(data);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static byte[] decrypt(byte[] encryptData, Key key) {
+        if (encryptData == null || key == null)
+            return null;
+
+        byte[] result = null;
+        try {
+            Cipher cipher = Cipher.getInstance("RSA"); // Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            result = cipher.doFinal(encryptData);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public static byte[] base64Dec(String decStr) {
