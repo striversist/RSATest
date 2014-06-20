@@ -89,6 +89,9 @@ public class MainActivity extends Activity {
         
         final String DEFAULT_ALGORITHM = "MD5withRSA";  // MD2withRSA/MD5withRSA/SHA1withRSA
         
+        // 由openssl命令生成：
+        // 1. openssl genrsa -out rsa_private_key.pem 2048
+        // 2. openssl rsa -in rsa_private_key.pem -out rsa_public_key.pem -pubout
         final String DEFAULT_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnJkCphbPB1TPCdYxr8s2" + "\r" +
                                        "pi/06xIwsSU3MYWBRIbqgWsUQGp9DFJ1N4pf7T/b7qakoNNEiDJPVrNyAKjUPUSB" + "\r" + 
                                        "1wwK5BFSPPrLL1ASnSI4KI6UufyFDKI5tYT0tuSfLSDwmDxJcyowKCeWr2lkr/Xf" + "\r" + 
@@ -97,6 +100,9 @@ public class MainActivity extends Activity {
                                        "KgsLF2GDbcDRrpNUkgwcUn9+6g42ZnW6oC2++/eI+QbBrYBmE5WMOSz2rPLtw//x" + "\r" + 
                                        "VwIDAQAB" + "\r";
         
+        // 由openssl命令生成：
+        // 1. openssl genrsa -out rsa_private_key.pem 2048  (同上)
+        // 2. openssl pkcs8 -topk8 -in rsa_private_key.pem -out pkcs8_rsa_private_key.pem -nocrypt
         final String DEFAULT_PRI_KEY = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCcmQKmFs8HVM8J" + "\r" +
                                        "1jGvyzamL/TrEjCxJTcxhYFEhuqBaxRAan0MUnU3il/tP9vupqSg00SIMk9Ws3IA" + "\r" +
                                        "qNQ9RIHXDArkEVI8+ssvUBKdIjgojpS5/IUMojm1hPS25J8tIPCYPElzKjAoJ5av" + "\r" + 
