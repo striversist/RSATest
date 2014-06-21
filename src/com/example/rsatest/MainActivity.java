@@ -1,5 +1,9 @@
 package com.example.rsatest;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +15,7 @@ import java.security.interfaces.RSAPublicKey;
 import javax.crypto.Cipher;
 
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -141,10 +146,30 @@ public class MainActivity extends Activity {
             byte[] decryptData = RSAHelper.decrypt(encryptData, privateKey);
             String data = new String(decryptData);
             Log.d("", "" + data);
+            
+            byte[] originData = readAssertData("data.txt");
+            signData = readAssertData("data.txt.md5.signed");
+            verify = RSAHelper.verifySignature(originData, publicKey, DEFAULT_ALGORITHM, signData);
+            Log.d("", "" + verify);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private byte[] readAssertData(String fileName) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            InputStream is = getAssets().open(fileName);
+            int byteRead = 0;
+            byte[] buffer = new byte[1024];
+            if ((byteRead = is.read(buffer)) != -1) {
+                bos.write(buffer, 0, byteRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bos.toByteArray();
     }
 }
