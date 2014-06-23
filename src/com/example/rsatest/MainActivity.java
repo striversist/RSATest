@@ -1,6 +1,5 @@
 package com.example.rsatest;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +14,6 @@ import java.security.interfaces.RSAPublicKey;
 import javax.crypto.Cipher;
 
 import android.app.Activity;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -151,6 +149,14 @@ public class MainActivity extends Activity {
             signData = readAssertData("data.txt.md5.signed");
             verify = RSAHelper.verifySignature(originData, publicKey, DEFAULT_ALGORITHM, signData);
             Log.d("", "" + verify);
+            
+            String base64Text = "SGe3ZbH+DBTcJDDfE1scY4EV6xDKXaqyXG8toPp4r3oPzT0GaSyQetTDpkTJhbkYJ40JaOYFdzZh0pmN4AIXNEuXekPPD3pxpbR71wDGFqbp4sOBQNaoh4eTyZNuw/+evPpE6fP9+MV4mbh6z6G5X+Zf7HSnePgr1JwvK1qBX4pEiTtlw4OqoCizh31f0N7konRxTTlnlqP+VZ1Pb25MZFpzU5ksj3ZMievdg6p4oYgu7bwW+ObI5VuFW/UaB62Gbial6Z1U2ZGOuJhgrLidh2uxEFEGrGqxmclz9j9auu6Cl9iM7297mnXqt/qVo/1Vzb5mtwjJl9Xoa5Dd9HIAIQ==";
+            signData = RSAHelper.base64Dec(base64Text);
+            verify = RSAHelper.verifySignature(DEFAULT_PLAIN_TEXT.getBytes(), publicKey, DEFAULT_ALGORITHM, signData);
+            Log.d("", "" + verify);
+            
+            String md5Test = RSAHelper.md5HexString(DEFAULT_PLAIN_TEXT.getBytes());
+            Log.d("", md5Test);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (Exception e) {

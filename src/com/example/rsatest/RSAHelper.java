@@ -1,8 +1,10 @@
 package com.example.rsatest;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -141,6 +143,31 @@ public class RSAHelper {
         }
 
         return result;
+    }
+    
+    public static byte[] md5(byte[] data) {
+        if (data == null)
+            return null;
+        
+        byte[] result = null; 
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            result = digest.digest(data);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public static String md5HexString(byte[] data) {
+        if (data == null)
+            return null;
+        byte[] md5Result = md5(data);
+        if (md5Result == null)
+            return null;
+        
+        BigInteger bigInteger = new BigInteger(md5Result);
+        return bigInteger.toString(16);
     }
 
     public static byte[] base64Dec(String decStr) {
