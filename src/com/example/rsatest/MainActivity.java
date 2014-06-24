@@ -178,7 +178,7 @@ public class MainActivity extends Activity {
             String decryptedString = new String(decryptData);
             Log.d("", decryptedString);
             
-//            encryptData = RSAHelper.encrypt(DEFAULT_PLAIN_TEXT.getBytes(), publicKey);
+//            encryptData = RSAHelper.encrypt("haha123".getBytes(), publicKey);
 //            writeToFile(encryptData, Environment.getExternalStorageDirectory() + File.separator + "hello.encrypted.txt");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
         return bos.toByteArray();
     }
     
-    private void writeToFile(byte[] data, String path) {
+    public void writeToFile(byte[] data, String path) {
         try {
             FileOutputStream fos = new FileOutputStream(path);
             fos.write(data);

@@ -103,7 +103,7 @@ public class RSAHelper {
         byte[] result = null;
 
         try {
-            Cipher cipher = Cipher.getInstance("RSA"); // Cipher.getInstance("RSA/ECB/PKCS1Padding"); "算法/工作模式/填充模式"
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding"); // "算法/工作模式/填充模式"
             cipher.init(Cipher.ENCRYPT_MODE, key);
             result = cipher.doFinal(data);
         } catch (NoSuchAlgorithmException e) {
@@ -127,7 +127,7 @@ public class RSAHelper {
 
         byte[] result = null;
         try {
-            Cipher cipher = Cipher.getInstance("RSA"); // Cipher.getInstance("RSA/ECB/PKCS1Padding"); "算法/工作模式/填充模式"
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding"); // "算法/工作模式/填充模式"
             cipher.init(Cipher.DECRYPT_MODE, key);
             result = cipher.doFinal(encryptData);
         } catch (NoSuchAlgorithmException e) {
