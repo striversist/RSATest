@@ -75,7 +75,8 @@ public class MainActivity extends Activity {
 //        test();
 //        testSign();
 //        testOpenssl();
-        testOpensslEncryptDecrypt();
+//        testOpensslEncryptDecrypt();
+        testTEA();
     }
 
     public void test() {
@@ -185,6 +186,22 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private void testTEA() {
+        String key = "abcdefghijklmnop";
+        TEACoding teaCoding = new TEACoding(key.getBytes());
+        byte[] encodedData = readAssertData("tea_encode.txt");
+        byte[] decodedData = teaCoding.decode(encodedData);
+        
+        String text = new String(decodedData);
+        Log.d("", text);
+        
+        String newKey = "@#0!JmI@%N!(&*^#";
+        teaCoding = new TEACoding(newKey.getBytes());
+        text = "ABCabc123你好~!@#$%^&*()";
+        encodedData = teaCoding.encode(text.getBytes());
+        writeToFile(encodedData, Environment.getExternalStorageDirectory() + File.separator + "tea.encoded.txt");
     }
     
     private byte[] readAssertData(String fileName) {
