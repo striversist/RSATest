@@ -166,7 +166,7 @@ public class RSAHelper {
         if (md5Result == null)
             return null;
         
-        BigInteger bigInteger = new BigInteger(md5Result);
+        BigInteger bigInteger = new BigInteger(1, md5Result);
         return bigInteger.toString(16);
     }
 
